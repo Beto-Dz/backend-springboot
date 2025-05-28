@@ -18,8 +18,11 @@ public class UserController {
     }
 
     @GetMapping
-    public List<User> getAllUsers() throws IOException {
-        return userService.getAllUsers();
+    public List<User> getAllUsers(@RequestParam(required = false) String type) throws IOException {
+        if (type == null || type.isBlank()) {
+            return userService.getAllUsers();
+        }
+        return userService.getByType(type);
     }
 
     @GetMapping("/{id}")

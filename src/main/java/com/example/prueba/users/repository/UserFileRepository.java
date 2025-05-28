@@ -10,8 +10,10 @@ import org.springframework.stereotype.Repository;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Repository
 public class UserFileRepository {
@@ -77,6 +79,27 @@ public class UserFileRepository {
         return findAll().stream()
                 .filter(u -> u.getId().equals(id))
                 .findFirst();
+    }
+
+    /**
+     * Método para obtener los usuarios que correspondan a un tipo
+     *
+     * @param tipo de usuarios a obtener
+     * @return usuarios que sean de x tipo
+     * @throws IOException
+     */
+    public List<User> findByType(String tipo) throws IOException {
+        if (tipo == null || tipo.isBlank()) {
+            return new ArrayList<>();
+        }
+
+        // Elimina comillas si están presentes
+        String tipoLimpio = tipo.replace("\"", "").trim();
+
+        return findAll().stream()
+                .filter(user -> user.getTipo() != null
+                        && user.getTipo().equalsIgnoreCase(tipoLimpio))
+                .collect(Collectors.toList());
     }
 
     /**

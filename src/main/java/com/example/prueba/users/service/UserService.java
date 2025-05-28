@@ -68,6 +68,16 @@ public class UserService {
     }
 
     /**
+     * Método para filtrar por el tipo
+     * @param tipo a filtrar
+     * @return lista de los usuarios que tengan ese tipo
+     * @throws IOException
+     */
+    public List<User> getByType(String tipo) throws IOException {
+        return repository.findByType(tipo);
+    }
+
+    /**
      * Método para obtener el tiempo que ha estado activo un usuario
      *
      * @param user usuario a calvular su tiempo activo
