@@ -1,0 +1,30 @@
+[
+{
+"id": 1,
+"clave": "CLAVE001",
+"tipo": "ADMIN",
+"nombre": "Juan",
+"username": "juanito",
+"apellidoPaterno": "Perez",
+"apellidoMaterno": "Lopez",
+"password": "password123",
+"fechaInicioSesion": "2023-05-01T10:00:00",
+"fechaFinSesion": "2023-05-01T12:30:00",
+"estatus": "ACTIVO",
+"tiempoEnLinea": "2h 30m"
+},
+{
+"id": 2,
+"clave": "CLAVE002",
+"tipo": "ADMIN",
+"nombre": "Macario",
+"username": "Alonso",
+"apellidoPaterno": "Perez",
+"apellidoMaterno": "Rodriguez",
+"password": "maca123",
+"fechaInicioSesion": "2023-05-01T10:00:00",
+"fechaFinSesion": "2023-05-01T12:30:00",
+"estatus": "ACTIVO",
+"tiempoEnLinea": "2h 30m"
+}
+]
