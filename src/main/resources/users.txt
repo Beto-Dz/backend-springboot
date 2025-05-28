@@ -2,7 +2,7 @@
 {
 "id": 1,
 "clave": "CLAVE001",
-"tipo": "ADMIN",
+"tipo": "user",
 "nombre": "Juan",
 "username": "juanito",
 "apellidoPaterno": "Perez",
@@ -16,7 +16,7 @@
 {
 "id": 2,
 "clave": "CLAVE002",
-"tipo": "ADMIN",
+"tipo": "admin",
 "nombre": "Macario",
 "username": "Alonso",
 "apellidoPaterno": "Perez",
