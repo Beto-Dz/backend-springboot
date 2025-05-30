@@ -44,7 +44,6 @@ public class User {
     @FutureOrPresent(message = "La fecha de fin de sesión debe ser en el futuro o presente")
     private LocalDateTime fechaFinSesion;
 
-    @NotBlank(message = "estatus es obligatorio")
     @Pattern(regexp = "^(activo|inactivo)$", message = "El estatus debe ser 'activo' o 'inactivo'")
     private String estatus;
 
