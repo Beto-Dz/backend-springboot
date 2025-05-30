@@ -4,12 +4,11 @@ import com.example.prueba.users.entity.User;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.fasterxml.jackson.core.type.TypeReference;
-import org.springframework.core.io.ClassPathResource;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -17,8 +16,8 @@ import java.util.stream.Collectors;
 
 @Repository
 public class UserFileRepository {
-    // nombre de archivo de texto
-    private static final String FILE_PATH = "users.txt";
+    @Value("${users.file.path}")
+    private String filePath;
 
     // mapper para leer el JSON y convertirlo en objetos Java
     private final ObjectMapper objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
@@ -30,11 +29,11 @@ public class UserFileRepository {
      * @throws IOException
      */
     public List<User> findAll() throws IOException {
-        // crea una entrada para leer el archivo de texto
-        InputStream inputStream = new ClassPathResource(FILE_PATH).getInputStream();
-
-        // retorna la conversion de la entrada del archivo a una lista de usuarios
-        return objectMapper.readValue(inputStream, new TypeReference<List<User>>() {
+        File file = new File(filePath);
+        if (!file.exists()) {
+            return new ArrayList<>();
+        }
+        return objectMapper.readValue(file, new TypeReference<List<User>>() {
         });
     }
 
@@ -45,7 +44,7 @@ public class UserFileRepository {
      * @throws IOException
      */
     private void saveAll(List<User> users) throws IOException {
-        File file = new ClassPathResource(FILE_PATH).getFile();
+        File file = new File(filePath);
         objectMapper.writeValue(file, users);
     }
 
@@ -112,5 +111,18 @@ public class UserFileRepository {
         List<User> users = findAll();
         users.removeIf(u -> u.getId().equals(id));
         saveAll(users);
+    }
+
+    /**
+     * metodo para buscar un usuario por su username
+     *
+     * @param username de usuario a buscar
+     * @return posible usuario encontrado
+     * @throws IOException
+     */
+    public Optional<User> findByUsername(String username) throws IOException {
+        return findAll().stream()
+                .filter(u -> u.getUsername().equalsIgnoreCase(username))
+                .findFirst();
     }
 }

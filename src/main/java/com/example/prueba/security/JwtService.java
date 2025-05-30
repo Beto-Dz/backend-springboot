@@ -1,5 +1,6 @@
 package com.example.prueba.security;
 
+import com.example.prueba.users.entity.User;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,11 +20,13 @@ public class JwtService {
     private static final Key SECRET_KEY = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION_TIME = 86400000; // 24 horas en milisegundos
 
-    public String generateToken(String username, String userType) {
+    public String generateToken(String username, String userType, LocalDateTime fechaFinSesion) {
         Map<String, Object> claims = new HashMap<>();
         claims.put("userType", userType);
+        claims.put("fechaFinSesion", fechaFinSesion != null ? fechaFinSesion.toString() : null);
         return createToken(claims, username);
     }
+
 
     private String createToken(Map<String, Object> claims, String subject) {
         return Jwts.builder()
@@ -51,7 +55,7 @@ public class JwtService {
         return extractClaim(token, Claims::getExpiration);
     }
 
-    private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
     }

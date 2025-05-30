@@ -23,6 +23,18 @@ public class UserService {
         this.repository = repository;
     }
 
+    public boolean existsByUsername(String username) throws IOException {
+        return repository.findAll().stream()
+                .anyMatch(u -> u.getUsername().equalsIgnoreCase(username));
+    }
+
+    public Optional<User> findByUsername(String username) throws IOException {
+        return repository.findAll().stream()
+                .filter(u -> u.getUsername().equalsIgnoreCase(username))
+                .findFirst();
+    }
+
+
     /**
      * Método para obtener los usuarios, a través del repository
      *
@@ -69,6 +81,7 @@ public class UserService {
 
     /**
      * Método para filtrar por el tipo
+     *
      * @param tipo a filtrar
      * @return lista de los usuarios que tengan ese tipo
      * @throws IOException
@@ -82,18 +95,17 @@ public class UserService {
      *
      * @param user usuario a calvular su tiempo activo
      */
-    private void calculateOnlineTime(User user) {
+    public void calculateOnlineTime(User user) {
         if (user.getFechaInicioSesion() != null) {
             LocalDateTime endTime = user.getFechaFinSesion() != null
                     ? user.getFechaFinSesion()
                     : LocalDateTime.now();
 
             Duration duration = Duration.between(user.getFechaInicioSesion(), endTime);
-            user.setTiempoEnLinea(
-                    String.format("%dh %dm", duration.toHours(), duration.toMinutesPart())
-            );
+            user.setTiempoEnLinea(String.format("%dh %dm", duration.toHours(), duration.toMinutesPart()));
         } else {
             user.setTiempoEnLinea("0h 0m");
         }
     }
+
 }
